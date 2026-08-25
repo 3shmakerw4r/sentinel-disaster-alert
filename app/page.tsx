@@ -1,6 +1,5 @@
 "use client";
-import {FormEvent,useCallback,useEffect,useMemo,useRef,useState} from "react";
-import maplibregl,{Map as MapLibreMap,Marker} from "maplibre-gl";
+import {FormEvent,useCallback,useEffect,useMemo,useState} from "react";
 type FeedItem={title:string;detail:string;time:string;kind:"weather"|"earthquake"};
 type Suggestion={label:string;latitude:number;longitude:number};
 type Data={generatedAt:string;scope:"national"|"local";query:string;location:string;geocoded:boolean;coordinates:{latitude:number;longitude:number}|null;availability:{nws:boolean;usgs:boolean;weather:boolean};currentWeather:{available:boolean;temperature:number|null;apparent:number|null;humidity:number|null;wind:number|null;condition:string;icon:string;sourceName:string;sourceUrl:string};weather:{count:number;highest:string;headline:string};earthquakes:{count:number;strongestMagnitude:number|null;headline:string};updates:FeedItem[];sources:{nws:string;usgs:string;weather:string}};
@@ -13,10 +12,8 @@ const backgrounds=[
 function relative(value:string){const minutes=Math.max(0,Math.round((Date.now()-new Date(value).getTime())/60000));return minutes<1?"Just now":minutes<60?`${minutes} min ago`:`${Math.floor(minutes/60)} hr ago`}
 
 function MiniLocationMap({latitude,longitude,label}:{latitude:number;longitude:number;label:string}){
- const container=useRef<HTMLDivElement>(null),map=useRef<MapLibreMap|null>(null),pin=useRef<Marker|null>(null);
- useEffect(()=>{if(!container.current)return;const instance=new maplibregl.Map({container:container.current,center:[longitude,latitude],zoom:9,attributionControl:false,style:{version:8,sources:{osm:{type:"raster",tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],tileSize:256,attribution:"© OpenStreetMap contributors"}},layers:[{id:"osm",type:"raster",source:"osm",paint:{"raster-saturation":-.2}}]}});instance.addControl(new maplibregl.NavigationControl({showCompass:false}),"top-right");instance.once("load",()=>instance.resize());map.current=instance;return()=>{pin.current?.remove();pin.current=null;instance.remove();map.current=null}},[]);
- useEffect(()=>{const instance=map.current;if(!instance)return;pin.current?.remove();pin.current=new maplibregl.Marker({color:"#ed9d36",scale:.9}).setLngLat([longitude,latitude]).addTo(instance);instance.jumpTo({center:[longitude,latitude],zoom:9});requestAnimationFrame(()=>instance.resize())},[latitude,longitude]);
- return <article className="mini-map-card"><div className="mini-map-canvas" ref={container}/><div className="mini-map-label"><div><span>Selected location</span><strong>⌖ {label}</strong></div><a href={`/map?q=${encodeURIComponent(label)}`}>Explore full map →</a></div><a className="osm-credit" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap</a></article>
+ const west=longitude-.12,east=longitude+.12,south=latitude-.075,north=latitude+.075,src=`https://www.openstreetmap.org/export/embed.html?bbox=${west}%2C${south}%2C${east}%2C${north}&layer=mapnik&marker=${latitude}%2C${longitude}`;
+ return <article className="mini-map-card"><iframe className="mini-map-canvas" src={src} title={`Interactive map of ${label}`} loading="lazy"/><div className="mini-map-label"><div><span>Selected location</span><strong>⌖ {label}</strong></div><a href={`/map?q=${encodeURIComponent(label)}`}>Explore full map →</a></div></article>
 }
 
 export default function Home(){
