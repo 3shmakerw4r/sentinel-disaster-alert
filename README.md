@@ -2,12 +2,12 @@
 
 Sentinel is an open-source community hazard dashboard that brings official alerts, weather conditions, sensor readings, and practical safety guidance into one clear interface.
 
-> **Status:** Early prototype. Displayed alerts are informational and must not replace instructions from emergency authorities.
+> **Status:** Early public prototype. Live NWS and USGS data is informational and must not replace instructions from emergency authorities.
 
 ## Planned data sources
 
-- NOAA / National Weather Service alerts
-- USGS earthquake feeds
+- NOAA / National Weather Service alerts — connected
+- USGS earthquake feeds — connected
 - NASA FIRMS wildfire data
 - Optional ESP32 or Raspberry Pi sensor stations
 
