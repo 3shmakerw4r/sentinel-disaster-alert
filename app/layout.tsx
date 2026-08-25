@@ -3,6 +3,8 @@ import "./globals.css";
 import "./live.css";
 import "./weather.css";
 import "./nationwide.css";
+import "maplibre-gl/dist/maplibre-gl.css";
+import "./map.css";
 
 export const metadata: Metadata = {
   title: "Sentinel Disaster Alert System",
