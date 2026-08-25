@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: "Sentinel Disaster Alert System",
   description: "Open-source community hazard monitoring and disaster awareness.",
   icons: {
-    icon: "/sentinel-logo.svg",
-    shortcut: "/sentinel-logo.svg",
+    icon: "/sentinel-logo.webp",
+    shortcut: "/sentinel-logo.webp",
   },
 };
 
