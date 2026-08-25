@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./live.css";
 import "./weather.css";
+import "./nationwide.css";
 
 export const metadata: Metadata = {
   title: "Sentinel Disaster Alert System",
   description: "Open-source community hazard monitoring and disaster awareness.",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/sentinel-logo.svg",
+    shortcut: "/sentinel-logo.svg",
   },
 };
 
