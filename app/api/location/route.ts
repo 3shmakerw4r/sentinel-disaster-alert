@@ -1,0 +1,5 @@
+import {NextRequest,NextResponse} from "next/server";
+export async function GET(request:NextRequest){
+ const latitude=Number(request.nextUrl.searchParams.get("lat")),longitude=Number(request.nextUrl.searchParams.get("lon"));if(!Number.isFinite(latitude)||!Number.isFinite(longitude)||latitude<18||latitude>72||longitude< -180||longitude> -60)return NextResponse.json({error:"Invalid U.S. coordinates"},{status:400});
+ try{const response=await fetch(`https://api.weather.gov/points/${latitude.toFixed(4)},${longitude.toFixed(4)}`,{headers:{"User-Agent":"Sentinel disaster awareness project (open-source)"},next:{revalidate:86400}});if(!response.ok)throw new Error();const data=await response.json() as {properties?:{relativeLocation?:{properties?:{city?:string;state?:string}}}};const place=data.properties?.relativeLocation?.properties,city=place?.city,state=place?.state;return NextResponse.json({label:city&&state?`${city}, ${state}`:city||state||`${latitude.toFixed(3)}, ${longitude.toFixed(3)}`,latitude,longitude})}catch{return NextResponse.json({label:`${latitude.toFixed(3)}, ${longitude.toFixed(3)}`,latitude,longitude})}
+}
